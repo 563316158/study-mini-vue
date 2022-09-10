@@ -37,6 +37,7 @@ function createGetter(isReadonly = false, isShallow = false) {
 function createSetter() {
   return function set(target, key, value) {
     const res = Reflect.set(target, key, value);
+    console.log("set:",res);
     //TODO 触发依赖
     trigger(target, key);
     return res;
@@ -51,7 +52,7 @@ export const mutableHanlders = {
 export const readonlyHanlders = {
   get: readonlyGet,
   set(target, key, value) {
-    console.warn(`key:${key} can not set,Becanse ${target} is readonly`);
+    console.warn(`key:${key} can not set,Becanse ${JSON.stringify(target)} is readonly`);
     // console.log(`key:${key} can not set,Becanse ${target} is readonly`);
     return true;
   },

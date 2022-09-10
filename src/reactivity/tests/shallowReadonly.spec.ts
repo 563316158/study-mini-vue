@@ -20,6 +20,6 @@ describe("shallowReadonly",()=>{
         user.age = 11;
 
         expect(console.warn).toBeCalled();
-        // expect(console.log).toBeCalled();
+        expect(user.age).toBe(10);
     })
 })

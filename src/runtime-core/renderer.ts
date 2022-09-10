@@ -1,4 +1,4 @@
-import { isObject } from "../shared/index";
+import { isOn } from "../shared/index";
 import { ShapeFlags } from "../shared/ShapeFlags";
 import { createComponentInstance, setupComponent } from "./component";
 
@@ -16,18 +16,7 @@ function patch(vnode: any, container: any) {
   // vnode -> flag
   // element
   const { shapeFlag } = vnode;
-  console.log(
-    vnode.type,
-    shapeFlag,
-    ShapeFlags.ELEMENT,
-    shapeFlag & ShapeFlags.ELEMENT
-  );
-  console.log(
-    vnode.type,
-    shapeFlag,
-    ShapeFlags.STATEFUL_COMPONENT, 
-    shapeFlag & ShapeFlags.STATEFUL_COMPONENT
-  );
+
   if (shapeFlag & ShapeFlags.ELEMENT) {
     processElement(vnode, container);
   } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
@@ -66,11 +55,11 @@ function mountElement(vnode: any, container: any) {
   const el = (vnode.el = document.createElement(vnode.type));
 
   // string array
-  const { children,shapeFlag } = vnode;
+  const { children, shapeFlag } = vnode;
 
-  if (shapeFlag&ShapeFlags.TEXT_CHILDREN) {
+  if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
     el.textContent = children;
-  } else if (shapeFlag&ShapeFlags.ARRAY_CHILDREN) {
+  } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
     // vnode
     mountChildren(vnode, el);
   }
@@ -79,7 +68,13 @@ function mountElement(vnode: any, container: any) {
   const { props = {} } = vnode;
   for (const key in props) {
     const val = props[key];
-    el.setAttribute(key, val);
+    // const isOn = (key) => /^on[A-Z]/.test(key);
+    if (isOn(key)) {
+      const event = key.slice(2).toLowerCase();
+      el.addEventListener(event, val);
+    } else {
+      el.setAttribute(key, val);
+    }
   }
   container.append(el);
 }

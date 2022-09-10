@@ -1,60 +1,57 @@
+import { shallowReadonly } from "../reactivity/reactive";
+import { initProps } from "./componentProps";
 import { publicInstanceProxyHandle } from "./componnentPublicInstance";
 
-export function createComponentInstance(vnode){
+export function createComponentInstance(vnode) {
+  const component = {
+    vnode,
+    props: {},
+    type: vnode.type,
+    setupState: {},
+  };
 
-    const component = {
-        vnode,
-        type:vnode.type,
-        setupState: {},
-    }
-
-    return component;
+  return component;
 }
 
-export function setupComponent(instance){
-    // TODO
-    // initProps()
-    // initSlots()
+export function setupComponent(instance) {
+  // TODO
+  initProps(instance,instance.vnode.props)
+  // initSlots()
 
-    // 翻译过来是有状态的组件
-    setupStatefulComponent(instance);
+  // 翻译过来是有状态的组件
+  setupStatefulComponent(instance);
 }
 
 function setupStatefulComponent(instance: any) {
-    const Component = instance.type;
+  const Component = instance.type;
 
-    // ctx
-    instance.proxy = new Proxy(
-        {_:instance},
-        publicInstanceProxyHandle,
-    )
+  // ctx
+  instance.proxy = new Proxy({ _: instance }, publicInstanceProxyHandle);
+  // debugger;
+  const { setup } = Component;
 
-    const { setup } = Component;
-
-    if(setup){
-        // function Object
-        const setupResult = setup();
-
-        handleSetupResult(instance,setupResult);
-    }
-}
-function handleSetupResult(instance,setupResult: any) {
+  if (setup) {
     // function Object
-    // TODO function
+    const setupResult = setup(shallowReadonly(instance.props));
 
-    if(typeof setupResult === "object"){
-        instance.setupState = setupResult;
-    }
+    handleSetupResult(instance, setupResult);
+  }
+}
+function handleSetupResult(instance, setupResult: any) {
+  // function Object
+  // TODO function
 
-    finishComponentSetup(instance)
+  if (typeof setupResult === "object") {
+    instance.setupState = setupResult;
+  }
+
+  finishComponentSetup(instance);
 }
 
 function finishComponentSetup(instance: any) {
-   
-    const Component = instance.type;
+  const Component = instance.type;
 
-    if(Component.render) {
-        instance.render = Component.render;
-    }
+  if (Component.render) {
+    instance.render = Component.render;
+  }
 }
-
