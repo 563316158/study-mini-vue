@@ -22,6 +22,7 @@ class RefImpl {
   }
 
   get value() {
+    // debugger;
     trackRefValue(this);
 
     return this._value;

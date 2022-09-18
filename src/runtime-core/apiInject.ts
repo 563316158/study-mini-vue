@@ -6,7 +6,7 @@ export function provide(key, value) {
 
   if (currentInstance) {
     let { provides } = currentInstance;
-    debugger;
+    // debugger;
     const parentProvides = currentInstance.parent?.provides;
 
     if (provides === parentProvides) {

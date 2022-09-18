@@ -1,7 +1,6 @@
 import { camelize, toHandlerKey } from "../shared/index";
 
 export const emit: any = (instance, event, ...args) => {
-  console.log("emit event", instance, event);
 
   const { props } = instance;
 
