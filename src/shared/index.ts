@@ -1,3 +1,11 @@
+/*
+ * @Author: Jerry.Qin 秦利杰 jerry.qin@youniverse.cc
+ * @Date: 2022-09-03 17:23:34
+ * @LastEditors: Jerry.Qin 秦利杰 jerry.qin@youniverse.cc
+ * @LastEditTime: 2022-09-18 21:27:12
+ * @FilePath: /GUI-MINI-VUE/src/shared/index.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE 
+ */
 export const extend = Object.assign;
 
 export const isObject = (val) => {
@@ -33,3 +41,5 @@ const capitalize = (str: string) => {
 export const toHandlerKey = (str: string) => {
   return str ? "on" + capitalize(str) : "";
 };
+
+export const EMPTY_OBJ = {};
