@@ -65,11 +65,11 @@ export function createRenderer(options) {
     if (!n1) {
       mountElement(n2, container, parentComponent);
     } else {
-      patchElement(n1, n2, container);
+      patchElement(n1, n2, container,parentComponent);
     }
   }
 
-  function patchElement(n1, n2, container) {
+  function patchElement(n1, n2, container,parentComponent) {
     console.log("patchElement");
     console.log("n1", n1);
     console.log("n2", n2);
@@ -79,15 +79,17 @@ export function createRenderer(options) {
     const oldProps = n1.props || EMPTY_OBJ;
     const newProps = n2.props || EMPTY_OBJ;
 
-    patchChildren(n1,n2,el);
+    patchChildren(n1,n2,el,parentComponent);
     patchProps(el, oldProps, newProps);
   }
 
-  function patchChildren(n1,n2,container){
-    const prevShapeFlage = n1.shapeFlag;
+  function patchChildren(n1,n2,container,parentComponent){
+    const prevShapeFlage = n1.shapeFlag; 
+    const c1 = n1.children;
     const { shapeFlag } = n2;
     const c2 = n2.children
 
+    // Array to Text
     if(shapeFlag & ShapeFlags.TEXT_CHILDREN){
       if(prevShapeFlage & ShapeFlags.ARRAY_CHILDREN){
         // 1、把老的 children 清空
@@ -96,11 +98,22 @@ export function createRenderer(options) {
         hostSetElementRext(container,c2);
       }
     }
-
+    // Text to Text  
     if(shapeFlag & ShapeFlags.TEXT_CHILDREN){
-      if(shapeFlag & ShapeFlags.TEXT_CHILDREN){
-        if(c2 !== n1.children){
+      if(prevShapeFlage & ShapeFlags.TEXT_CHILDREN){
+        if(c2 !== c1){
           hostSetElementRext(container,c2);
+        }
+      }
+    }
+    // Text to Array
+    if(shapeFlag & ShapeFlags.ARRAY_CHILDREN){
+      if(prevShapeFlage & ShapeFlags.TEXT_CHILDREN){
+        if(c2 !== n1.children){
+          // 1、把老的 Text 清空
+          hostSetElementRext(container,'');
+          // 2、设置新的 Array
+          mountChildren(n2,container,parentComponent)
         }
       }
     }
