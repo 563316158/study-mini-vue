@@ -1,8 +1,8 @@
 /*
  * @Author: Jerry.Qin 秦利杰 jerry.qin@youniverse.cc
  * @Date: 2022-09-17 23:15:07
- * @LastEditors: Jerry.Qin 秦利杰 jerry.qin@youniverse.cc
- * @LastEditTime: 2022-09-18 20:58:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-09-22 21:47:13
  * @FilePath: /GUI-MINI-VUE/src/runtime-dom/index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -30,7 +30,19 @@ export function insert(el, container) {
   container.append(el);
 }
 
-const renderer: any = createRenderer({ createElement, patchProp, insert });
+export function remove(child){
+  debugger;
+  const parent = child.parentNode;
+  if(parent){
+    parent.removeChild(child);
+  }
+}
+
+export function setElementRext(el,text){
+  el.textContent = text
+}
+
+const renderer: any = createRenderer({ createElement, patchProp, insert ,remove ,setElementRext});
 
 const { createApp } = renderer;
 export { createApp };

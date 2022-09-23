@@ -10,6 +10,8 @@ export function createRenderer(options) {
     createElement: hostCreateElement,
     patchProp: hostPatchProp,
     insert: hostInsert,
+    remove: hostRemove,
+    setElementRext: hostSetElementRext,
   } = options;
 
   function render(vnode, container) {
@@ -77,7 +79,38 @@ export function createRenderer(options) {
     const oldProps = n1.props || EMPTY_OBJ;
     const newProps = n2.props || EMPTY_OBJ;
 
+    patchChildren(n1,n2,el);
     patchProps(el, oldProps, newProps);
+  }
+
+  function patchChildren(n1,n2,container){
+    const prevShapeFlage = n1.shapeFlag;
+    const { shapeFlag } = n2;
+    const c2 = n2.children
+
+    if(shapeFlag & ShapeFlags.TEXT_CHILDREN){
+      if(prevShapeFlage & ShapeFlags.ARRAY_CHILDREN){
+        // 1、把老的 children 清空
+        unmountChilren(n1.children);
+        // 2、设置新的 text
+        hostSetElementRext(container,c2);
+      }
+    }
+
+    if(shapeFlag & ShapeFlags.TEXT_CHILDREN){
+      if(shapeFlag & ShapeFlags.TEXT_CHILDREN){
+        if(c2 !== n1.children){
+          hostSetElementRext(container,c2);
+        }
+      }
+    }
+  }
+
+  function unmountChilren(children){
+    for (let i = 0; i < children.length; i++) {
+      const el = children[i].el;
+      hostRemove(el);
+    }
   }
 
   function patchProps(el, oldProps, newProps) {
