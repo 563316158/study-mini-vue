@@ -1,3 +1,6 @@
+/*
+ * @Author: Jerry.Qin 秦利杰 jerry.qin@youniverse.cc
+ */
 import { ShapeFlags } from "../shared/ShapeFlags";
 
 export const Fragment = Symbol('Fragment');
@@ -7,6 +10,7 @@ export function createVNode(type, props?, children?) {
   const vnode = {
     type,
     props, 
+    key:props&&props.key,
     children,
     shapeFlag: getShapeFlag(type),
     el: null,

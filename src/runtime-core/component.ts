@@ -1,3 +1,6 @@
+/*
+ * @Author: Jerry.Qin 秦利杰 jerry.qin@youniverse.cc
+ */
 import { proxyRefs } from "../reactivity";
 import { shallowReadonly } from "../reactivity/reactive";
 import { emit } from "./componentEmit";
@@ -6,7 +9,6 @@ import { initSlots } from "./componentSlots";
 import { publicInstanceProxyHandle } from "./componnentPublicInstance";
 
 export function createComponentInstance(vnode, parent) {
-  console.log("createComponentInstance:", parent);
 
   const component = {
     vnode,

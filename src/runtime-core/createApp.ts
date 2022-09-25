@@ -1,3 +1,6 @@
+/*
+ * @Author: Jerry.Qin 秦利杰 jerry.qin@youniverse.cc
+ */
 
 import { createVNode } from "./vnode";
 
@@ -9,7 +12,6 @@ export function createAppAPI(render) {
         // component -> vnode
         // 所有的逻辑操作 都会基于 vnode 做处理
         const vnode = createVNode(rootComponent);
-        console.log(vnode);
 
         render(vnode, rootContainer);
       },

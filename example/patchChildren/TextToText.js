@@ -1,10 +1,13 @@
+/*
+ * @Author: Jerry.Qin 秦利杰 jerry.qin@youniverse.cc
+ */
 import { ref, h } from "../../lib/study-mini-vue.esm.js";
 
 const prevChildren = "oldChild";
 const nextChildren = "newChild";
 
 export default {
-  name: "ArrayToText",
+  name: "TextToText",
   setup() {
     const isChange = ref(false);
     window.isChange = isChange;
